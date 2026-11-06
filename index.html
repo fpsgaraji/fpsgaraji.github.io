@@ -43,7 +43,7 @@ const AYAR = {
       <a class="btn pri" data-indir href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Ücretsiz indir</a>
       <a class="btn prem" href="#fiyat">Premium al</a>
     </div>
-    <small>Kurulum gerekmez · Boost ve Analiz ücretsiz</small>
+    <small>Kurulum gerekmez · Boost ve Analiz ücretsiz · <a href="#uyari" onclick="document.getElementById('uyari').open=true">Windows uyarı verirse?</a></small>
     <div class="trust"><span><i></i><b>Her ayar geri alınır</b></span><span><i></i><b>Geri yükleme noktası</b> otomatik</span><span><i></i>Kişisel veri <b>gönderilmez</b></span></div>
   </div>
   <img class="logo" src="logo_512.png" alt="FPS GARAJI logosu">
@@ -120,7 +120,8 @@ const AYAR = {
   <div class="faq">
     <details><summary>Güvenli mi? Bilgisayarıma zarar verir mi?</summary><p>Program yalnızca Windows'un kendi ayarlarını değiştirir; değişen her değerin eskisini kaydeder ve öncesinde geri yükleme noktası oluşturur. Güvenliği azaltan ayarlar (Defender, Bellek Bütünlüğü, Spectre korumaları) hiç uygulanmaz.</p></details>
     <details><summary>Ne kadar FPS artışı sağlar?</summary><p>Bilgisayara göre değişir. Ayarları zaten iyi olan bir sistemde fark küçük olur; kapalı XMP, yanlış güç planı veya arka plan kaydı açık olan sistemlerde belirgin olabilir. Bu yüzden programda Boost öncesi ve sonrası ölçen bir FPS testi var. Rakam vaat etmiyoruz, ölçmeni istiyoruz.</p></details>
-    <details><summary>Windows "bilgisayarınızı korudu" diyor, ne yapmalıyım?</summary><p>Bu, Windows'un yeni ve az indirilmiş programlar için gösterdiği bir uyarıdır, virüs uyarısı değildir. "Ek bilgi" ve ardından "Yine de çalıştır"a tıklaman yeterli. Program indirildikçe bu uyarı kendiliğinden kalkar.</p></details>
+    <details id="uyari"><summary>Windows "bilgisayarınızı korudu" diyor, ne yapmalıyım?</summary><p>Bu, Windows SmartScreen'in yeni ve henüz az indirilmiş programlar için gösterdiği bir uyarıdır, virüs uyarısı değildir. Mavi pencerede <b>"Ek bilgi"</b> yazısına, ardından çıkan <b>"Yine de çalıştır"</b> düğmesine tıklaman yeterli. Program indirildikçe Windows onu tanır ve bu uyarı kendiliğinden kalkar.</p></details>
+    <details><summary>Antivirüsüm veya Defender virüs uyarısı verdi?</summary><p>Optimizasyon programları Windows ayarlarını değiştirdiği için antivirüsler bazen yeni sürümleri yanlışlıkla şüpheli bulabilir. Her sürümü Microsoft'a inceletiyoruz. Uyarı alırsan dosyayı yalnızca <b>fpsgaraji.com</b>'dan indirdiğinden emin ol ve <a data-eposta href="#">bize yaz</a>; dosyayı tekrar inceletip sana dönüş yaparız. Başka sitelerden indirilen kopyalara güvenme.</p></details>
     <details><summary>Key kaç bilgisayarda çalışır?</summary><p>Her key tek bilgisayar içindir; ilk girildiği bilgisayara bağlanır. Etkinleştirirken bir kez internet gerekir, sonrasında internetsiz çalışır.</p></details>
     <details><summary>Key'imi ne zaman alırım?</summary><p>Shopier'den ödemen onaylandıktan sonra key, siparişte yazdığın e-posta adresine gönderilir. Gelmezse spam klasörünü kontrol et veya <a data-eposta href="#">bize yaz</a>.</p></details>
     <details><summary>Bilgisayarımı formatlarsam ya da parça değiştirirsem?</summary><p>Bize sipariş bilgilerinle yaz, key'ini yeni sisteme taşıyalım.</p></details>

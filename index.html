@@ -30,7 +30,7 @@ const AYAR = {
 
 <nav><div class="w">
   <a class="brand" href="#"><img src="logo.png" alt="">FPS <span>GARAJI</span></a>
-  <div class="links"><a href="#ozellikler">Özellikler</a><a href="#nasil">Nasıl çalışır</a><a href="#fiyat">Fiyat</a><a href="#sss">SSS</a></div>
+  <div class="links"><a href="#ozellikler">Özellikler</a><a href="#nasil">Nasıl çalışır</a><a href="#fiyat">Fiyat</a><a href="#yorumlar" id="rv-nav" style="display:none">Yorumlar</a><a href="#sss">SSS</a></div>
   <a class="btn sm pri" data-indir href="#">Ücretsiz indir</a>
 </div></nav>
 
@@ -97,6 +97,25 @@ const AYAR = {
   </div>
 </div></section>
 
+<section id="yorumlar" style="display:none"><div class="w">
+  <div class="c"><span class="tag">Değerlendirmeler</span><h2>Alıcılarımız ne diyor?</h2>
+    <p class="lead" id="rv-ozet" style="margin:0 auto"></p></div>
+  <div class="reviews" id="rv-list"></div>
+  <div class="rv-form card">
+    <h3>Değerlendirme yaz</h3>
+    <p class="mut" style="font-size:14px;margin-top:4px">Yalnızca satın alanlar değerlendirebilir. Sipariş numaran ve e-postan yalnızca doğrulama için kullanılır, <b>yayınlanmaz</b>.</p>
+    <div class="rv-rate" id="rv-rate" aria-label="Puan ver"><span data-s="1">★</span><span data-s="2">★</span><span data-s="3">★</span><span data-s="4">★</span><span data-s="5">★</span></div>
+    <div class="rv-row">
+      <input id="rv-isim" placeholder="İsmin (yorumda görünür)" maxlength="40" autocomplete="name">
+      <input id="rv-email" type="email" placeholder="Siparişteki e-postan" maxlength="120" autocomplete="email">
+    </div>
+    <input id="rv-siparis" placeholder="Shopier sipariş numaran" maxlength="40">
+    <textarea id="rv-yorum" placeholder="Programı nasıl buldun? Deneyimini yaz…" maxlength="600"></textarea>
+    <button class="btn pri" id="rv-gonder">Değerlendirmeyi gönder</button>
+    <div class="rv-msg" id="rv-msg"></div>
+  </div>
+</div></section>
+
 <section id="fiyat" style="background:var(--bg2)"><div class="w">
   <div class="c"><span class="tag">Fiyat</span><h2>Önce dene, sonra karar ver</h2><p class="lead">Ücretsiz sürümle Boost ve Analiz'i hemen kullan. Tüm özellikler için Premium key al.</p></div>
   <div class="plans">
@@ -155,5 +174,47 @@ document.querySelectorAll('[data-yil]').forEach(e => e.textContent = new Date().
   <span>İndir</span>
 </a>
 
+<script>
+(function () {
+  var API = 'https://fpsgaraji-lisans.fpsgaraji.workers.dev';
+  var sec = document.getElementById('yorumlar');
+  var listEl = document.getElementById('rv-list');
+  var ozetEl = document.getElementById('rv-ozet');
+  var rate = document.getElementById('rv-rate');
+  var puan = 0;
+  function paintTo(n){ [].forEach.call(rate.children, function(s){ s.classList.toggle('on', +s.dataset.s <= n); }); }
+  [].forEach.call(rate.children, function(st){ st.onclick = function(){ puan = +st.dataset.s; paintTo(puan); }; st.onmouseenter = function(){ paintTo(+st.dataset.s); }; });
+  rate.onmouseleave = function(){ paintTo(puan); };
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function stars(n){ return '★★★★★'.slice(0,n) + '<span class="e">' + '★★★★★'.slice(0,5-n) + '</span>'; }
+  function ay(d){ try { return new Date(d).toLocaleDateString('tr-TR',{year:'numeric',month:'long'}); } catch(e){ return ''; } }
+  function val(id){ return document.getElementById(id).value.trim(); }
+  function render(d){
+    sec.style.display = '';
+    var nav = document.getElementById('rv-nav'); if (nav) nav.style.display = '';
+    ozetEl.innerHTML = d.sayi > 0
+      ? '<b style="color:#ffb020;letter-spacing:2px">' + stars(Math.round(d.ortalama)) + '</b> ' + d.ortalama + ' / 5 · ' + d.sayi + ' değerlendirme'
+      : 'İlk değerlendirmeyi sen yaz.';
+    listEl.innerHTML = (d.degerlendirmeler || []).map(function(r){
+      return '<div class="rev"><div class="rh"><b>' + esc(r.isim) + '</b><span class="vf">✓ Doğrulanmış alıcı</span></div>'
+        + '<div class="rs">' + stars(r.puan) + '</div><p>' + esc(r.yorum) + '</p><span class="rd">' + ay(r.tarih) + '</span></div>';
+    }).join('');
+  }
+  fetch(API + '/degerlendirmeler').then(function(r){ return r.json(); }).then(function(d){ if (d && d.ok) render(d); }).catch(function(){});
+  document.getElementById('rv-gonder').onclick = async function(){
+    var msg = document.getElementById('rv-msg'), btn = this;
+    if (!puan) { msg.className = 'rv-msg err'; msg.textContent = 'Önce yıldızla puan ver.'; return; }
+    btn.disabled = true; msg.className = 'rv-msg'; msg.textContent = 'Gönderiliyor…';
+    try {
+      var r = await fetch(API + '/degerlendirme', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ isim: val('rv-isim'), email: val('rv-email'), siparis: val('rv-siparis'), yorum: val('rv-yorum'), puan: puan }) });
+      var d = await r.json();
+      msg.className = 'rv-msg ' + (d.ok ? 'ok' : 'err');
+      msg.textContent = d.ok ? d.message : (d.error || 'Gönderilemedi.');
+      if (d.ok) { ['rv-isim','rv-email','rv-siparis','rv-yorum'].forEach(function(i){ document.getElementById(i).value=''; }); puan = 0; paintTo(0); }
+    } catch (e) { msg.className = 'rv-msg err'; msg.textContent = 'Bağlantı kurulamadı, az sonra tekrar dene.'; }
+    btn.disabled = false;
+  };
+})();
+</script>
 </body>
 </html>

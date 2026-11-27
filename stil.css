@@ -136,3 +136,10 @@ footer a:hover{color:var(--tx)}
 .ogr .oi svg{width:26px;height:26px}
 .ogr .ot{flex:1}.ogr .ot b{display:block;font-size:18px}.ogr .ot span{color:var(--mut);font-size:14.5px}
 @media (max-width:600px){.ogr{flex-direction:column;text-align:center}.ogr .btn{width:100%}}
+
+/* sabit indir butonu (her zaman görünür, sağ altta) */
+.fdl{position:fixed;right:18px;bottom:18px;z-index:30;display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 20px;border-radius:14px;font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(135deg,#2d7dff,#1a5fe0);box-shadow:0 10px 34px -6px rgba(45,125,255,.65);transition:transform .15s,box-shadow .2s}
+.fdl:hover{transform:translateY(-2px);box-shadow:0 14px 40px -6px rgba(45,125,255,.8)}
+.fdl svg{width:19px;height:19px}
+@media (max-width:600px){.fdl{right:14px;bottom:14px;height:46px;padding:0 15px;font-size:14.5px}}
+@media print{.fdl{display:none}}

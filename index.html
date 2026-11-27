@@ -21,7 +21,7 @@
 const AYAR = {
   indir: "https://github.com/fpsgaraji/fpsgaraji.github.io/releases/latest/download/FPSGaraji.zip", // indirme linki
   shopier: "https://www.shopier.com/fpsgaraji/52630183", // Shopier ürün linki
-  fiyat: "200 TL",
+  fiyat: "225 TL",
   dm: "https://ig.me/m/fpsgaraji",      // öğrenci indirimi talebi: Instagram DM
   surum: "2.8.2",
   eposta: "iletisim@fpsgaraji.com"
@@ -150,5 +150,10 @@ document.querySelectorAll('[data-surum]').forEach(e => e.textContent = AYAR.suru
 document.querySelectorAll('[data-eposta]').forEach(a => { a.href = 'mailto:' + AYAR.eposta; if (!a.textContent) a.textContent = AYAR.eposta; });
 document.querySelectorAll('[data-yil]').forEach(e => e.textContent = new Date().getFullYear());
 </script>
+<a class="fdl" data-indir href="#" aria-label="FPS GARAJI indir">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+  <span>İndir</span>
+</a>
+
 </body>
 </html>
